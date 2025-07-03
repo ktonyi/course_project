@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Admin Panel</h2>
+
+        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">Users</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="templates-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-controls="templates" aria-selected="false">Templates</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button" role="tab" aria-controls="forms" aria-selected="false">Forms</button>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-3" id="adminTabsContent">
+            <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
+                <h3>Manage Users</h3>
+                {% if users|length > 0 %}
+                    <table class="table table-hover" id="users-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="sortable" data-sort="email">Email <span class="sort-icon"></span></th>
+                                <th scope="col" class="sortable" data-sort="name">Name <span class="sort-icon"></span></th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Roles</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.isBlocked ? 'Blocked' : 'Active' }}</td>
+                                    <td>{{ user.roles|join(', ') }}</td>
+                                    <td>
+                                        {% if user.isBlocked %}
+                                            <form method="post" action="{{ path('admin_user_unblock', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Unblock user?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('unblock' ~ user.id) }}">
+                                                <button type="submit" class="btn btn-sm btn-outline-success">Unblock</button>
+                                            </form>
+                                        {% else %}
+                                            <form method="post" action="{{ path('admin_user_block', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Block user?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('block' ~ user.id) }}">
+                                                <button type="submit" class="btn btn-sm btn-outline-warning">Block</button>
+                                            </form>
+                                        {% endif %}
+                                        <form method="post" action="{{ path('admin_user_delete', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Delete user?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                        <form method="post" action="{{ path('admin_user_toggle_admin', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Toggle admin role?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('toggle-admin' ~ user.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-primary">{{ 'ROLE_ADMIN' in user.roles ? 'Remove Admin' : 'Make Admin' }}</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No users found.</p>
+                {% endif %}
+            </div>
+            <div class="tab-pane fade" id="templates" role="tabpanel" aria-labelledby="templates-tab">
+                <h3>Manage Templates</h3>
+                {% if templates|length > 0 %}
+                    <table class="table table-hover" id="templates-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="sortable" data-sort="title">Title <span class="sort-icon"></span></th>
+                                <th scope="col" class="sortable" data-sort="topic">Topic <span class="sort-icon"></span></th>
+                                <th scope="col">Created By</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for template in templates %}
+                                <tr>
+                                    <td>{{ template.title }}</td>
+                                    <td>{{ template.topic }}</td>
+                                    <td>{{ template.createdBy.email }}</td>
+                                    <td>
+                                        <form method="post" action="{{ path('admin_template_delete', {'id': template.id}) }}" style="display:inline;" onsubmit="return confirm('Delete template?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ template.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No templates found.</p>
+                {% endif %}
+            </div>
+            <div class="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="forms-tab">
+                <h3>Manage Forms</h3>
+                <p>No forms yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded'); 
+            const tables = ['users-table', 'templates-table'];
+            tables.forEach(tableId => {
+                const table = document.getElementById(tableId);
+                if (table) {
+                    const sortables = table.querySelectorAll('.sortable');
+                    sortables.forEach(sortable => {
+                        sortable.addEventListener('click', function() {
+                            console.log('Sorting clicked:', this.dataset.sort); 
+                            const tbody = table.querySelector('tbody');
+                            const rows = Array.from(tbody.querySelectorAll('tr'));
+                            const column = this.dataset.sort;
+                            const order = this.classList.contains('asc') ? 'desc' : 'asc';
+
+                            rows.sort((a, b) => {
+                                const aValue = a.querySelector(`td:nth-child(${Array.from(this.parentElement.children).indexOf(this) + 1})`).textContent;
+                                const bValue = b.querySelector(`td:nth-child(${Array.from(this.parentElement.children).indexOf(this) + 1})`).textContent;
+                                return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+                            });
+
+                            sortables.forEach(s => s.classList.remove('asc', 'desc'));
+                            this.classList.add(order);
+                            tbody.innerHTML = '';
+                            rows.forEach(row => tbody.appendChild(row));
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}

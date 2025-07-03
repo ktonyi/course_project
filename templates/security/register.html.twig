@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Register</h2>
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': ''}}) }}
+            <div class="mb-3">
+                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.name, 'Name', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.password, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.password, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                {{ form_errors(form.password) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>My Profile</h2>
+
+        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="create-template-tab" data-bs-toggle="tab" data-bs-target="#create-template" type="button" role="tab" aria-controls="create-template" aria-selected="true">Create Template</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="templates-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-controls="templates" aria-selected="false">My Templates</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button" role="tab" aria-controls="forms" aria-selected="false">My Forms</button>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-3" id="profileTabsContent">
+            <div class="tab-pane fade show active" id="create-template" role="tabpanel" aria-labelledby="create-template-tab">
+                <h3>Create New Template</h3>
+                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': ''}}) }}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Template Settings</h5>
+                            <div class="mb-3">
+                                {{ form_label(form.title, 'Title', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.title) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.description) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.topic, 'Topic', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.topic, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.topic) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.tags, 'Tags (comma-separated)', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.tags, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.tags) }}
+                            </div>
+                            <div class="mb-3 form-check">
+                                {{ form_widget(form.isPublic, {'attr': {'class': 'form-check-input'}}) }}
+                                {{ form_label(form.isPublic, 'Public', {'label_attr': {'class': 'form-check-label'}}) }}
+                                {{ form_errors(form.isPublic) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(form.allowedUsers, 'Allowed Users', {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.allowedUsers, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.allowedUsers) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Questions</h5>
+                            {{ form_errors(form.questions) }} {# Добавляем отображение ошибок для коллекции вопросов #}
+                            <div id="questions-container" data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}">
+                                {% for question in form.questions %}
+                                    <div class="question-item card mb-2">
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                {{ form_label(question.type, 'Question Type', {'label_attr': {'class': 'form-label'}}) }}
+                                                {{ form_widget(question.type, {'attr': {'class': 'form-control question-type'}}) }}
+                                                {{ form_errors(question.type) }}
+                                            </div>
+                                            <div class="mb-3">
+                                                {{ form_label(question.title, 'Question Title', {'label_attr': {'class': 'form-label'}}) }}
+                                                {{ form_widget(question.title, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(question.title) }}
+                                            </div>
+                                            <div class="mb-3">
+                                                {{ form_label(question.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                                                {{ form_widget(question.description, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(question.description) }}
+                                            </div>
+                                            <div class="mb-3 form-check">
+                                                {{ form_widget(question.isVisibleInResults, {'attr': {'class': 'form-check-input'}}) }}
+                                                {{ form_label(question.isVisibleInResults, 'Show in results table', {'label_attr': {'class': 'form-check-label'}}) }}
+                                                {{ form_errors(question.isVisibleInResults) }}
+                                            </div>
+                                            <div class="mb-3">
+                                                {{ form_label(question.position, 'Position', {'label_attr': {'class': 'form-label'}}) }}
+                                                {{ form_widget(question.position, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_errors(question.position) }}
+                                            </div>
+                                            <button type="button" class="btn btn-outline-danger remove-question">Remove</button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn btn-outline-primary add-question mt-2">Add Question</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Template</button>
+                {{ form_end(form)}}
+            </div>
+            <div class="tab-pane fade" id="templates" role="tabpanel" aria-labelledby="templates-tab">
+                <h3>My Templates</h3>
+                {% if templates|length > 0 %}
+                    <table class="table table-hover" id="templates-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="sortable" data-sort="title">Title <span class="sort-icon"></span></th>
+                                <th scope="col" class="sortable" data-sort="topic">Topic <span class="sort-icon"></span></th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for template in templates %}
+                                <tr>
+                                    <td>{{ template.title }}</td>
+                                    <td>{{ template.topic }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">Edit</a>
+                                        <form method="post" action="{{ path('template_delete', {'id': template.id}) }}" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ template.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No templates yet.</p>
+                {% endif %}
+            </div>
+            <div class="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="forms-tab">
+                <h3>My Forms</h3>
+                <p>No forms yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+
+            
+            const sortables = document.querySelectorAll('.sortable');
+            sortables.forEach(sortable => {
+                sortable.addEventListener('click', function() {
+                    console.log('Sorting clicked:', this.dataset.sort);
+                    const table = document.getElementById('templates-table');
+                    const tbody = table.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    const column = this.dataset.sort;
+                    const order = this.classList.contains('asc') ? 'desc' : 'asc';
+
+                    rows.sort((a, b) => {
+                        const aValue = a.querySelector(`td:nth-child(${Array.from(this.parentElement.children).indexOf(this) + 1})`).textContent;
+                        const bValue = b.querySelector(`td:nth-child(${Array.from(this.parentElement.children).indexOf(this) + 1})`).textContent;
+                        return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+                    });
+
+                    sortables.forEach(s => s.classList.remove('asc', 'desc'));
+                    this.classList.add(order);
+                    tbody.innerHTML = '';
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            });
+
+           
+            const questionContainer = $('#questions-container');
+            const prototype = questionContainer.data('prototype');
+            let questionIndex = questionContainer.children('.question-item').length;
+
+            $('.add-question').on('click', function() {
+                
+                const typeCounts = {
+                    'string': 0,
+                    'text': 0,
+                    'integer': 0,
+                    'checkbox': 0
+                };
+                questionContainer.find('.question-type').each(function() {
+                    typeCounts[$(this).val()]++;
+                });
+
+                const newQuestion = $(prototype.replace(/__name__/g, questionIndex));
+                newQuestion.find('.question-type').val('string'); 
+                newQuestion.find('input[name$="[position]"]').val(questionIndex + 1);
+                questionContainer.append(newQuestion);
+                questionIndex++;
+            });
+
+            questionContainer.on('click', '.remove-question', function() {
+                $(this).closest('.question-item').remove();
+                
+                questionContainer.find('.question-item').each(function(index) {
+                    $(this).find('input[name$="[position]"]').val(index + 1);
+                });
+                questionIndex = questionContainer.children('.question-item').length;
+            });
+
+            
+            questionContainer.on('change', '.question-type', function() {
+                const typeCounts = {
+                    'string': 0,
+                    'text': 0,
+                    'integer': 0,
+                    'checkbox': 0
+                };
+                questionContainer.find('.question-type').each(function() {
+                    typeCounts[$(this).val()]++;
+                });
+                if (typeCounts[$(this).val()] > 4) {
+                    alert(`Maximum 4 questions of type '${$(this).val()}' allowed.`);
+                    $(this).val('string');
+                }
+            });
+        });
+    </script>
+{% endblock %}

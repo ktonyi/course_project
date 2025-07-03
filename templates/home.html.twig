@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Latest Templates</h2>
+    <div class="row">
+        {% for template in latest_templates %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Template Name</h5>
+                        <p class="card-text">Description...</p>
+                        <p class="card-text"><small class="text-muted">By: Author</small></p>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No templates yet.</p>
+        {% endfor %}
+    </div>
+
+    <h2>Top 5 Popular Templates</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Forms Filled</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for template in top_templates %}
+                <tr>
+                    <td>Template Name</td>
+                    <td>0</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="2">No templates yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Tag Cloud</h2>
+    <div>
+        {% for tag in tags %}
+            <span class="badge bg-primary">{{ tag }}</span>
+        {% else %}
+            <p>No tags yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
