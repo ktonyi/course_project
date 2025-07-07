@@ -1,0 +1,102 @@
+navbar:
+    brand: Пользовательские формы
+    login: Вход
+    register: Регистрация
+    profile: Профиль
+    admin: Админ
+    logout: Выход
+    search: Поиск
+    language: Язык
+home:
+    latest_templates: Последние шаблоны
+    top_templates: Топ-5 популярных шаблонов
+    tag_cloud: Облако тегов
+    no_templates: Шаблоны отсутствуют
+    no_tags: Теги отсутствуют
+    author: Автор
+    fill_form: Заполнить форму
+    title: Название
+    forms_filled: Заполнено форм
+form:
+    fill_title: Заполнение формы
+    submit: Отправить
+    no_answer: Нет ответа
+    answers: Ответы
+    filled_by: Заполнена пользователем
+    back: Назад
+    success: Форма успешно заполнена!
+profile:
+    title: Мой профиль
+    create_template: Создать шаблон
+    my_templates: Мои шаблоны
+    my_forms: Мои формы
+    no_forms: Формы отсутствуют
+    no_templates: Шаблоны отсутствуют
+    template_title: Название
+    topic: Тема
+    actions: Действия
+    edit: Редактировать
+    delete: Удалить
+    view: Просмотреть
+    template_settings: Настройки шаблона
+    questions: Вопросы
+    question_type: Тип вопроса
+    question_type.string: Однострочный текст
+    question_type.text: Многострочный текст
+    question_type.integer: Целое неотрицательное число
+    question_type.checkbox: Чекбокс
+    question_title: Название вопроса
+    description: Описание
+    show_in_results: Показывать в результатах
+    position: Позиция
+    remove: Удалить
+    add_question: Добавить вопрос
+    max_questions: Максимум 4 вопроса типа '%type%'
+    tags: Теги (через запятую)
+    public: Публичный
+    allowed_users: Разрешённые пользователи
+    topic.education: Образование
+    topic.quiz: Викторина
+    topic.other: Другое
+    confirm_delete: Удалить шаблон?
+admin:
+    title: Админ-панель
+    manage_users: Управление пользователями
+    manage_templates: Управление шаблонами
+    manage_forms: Управление формами
+    no_users: Пользователи отсутствуют
+    no_templates: Шаблоны отсутствуют
+    no_forms: Формы отсутствуют
+    email: Email
+    name: Имя
+    status: Статус
+    roles: Роли
+    actions: Действия
+    blocked: Заблокирован
+    active: Активен
+    unblock: Разблокировать
+    block: Заблокировать
+    delete: Удалить
+    make_admin: Сделать админом
+    remove_admin: Убрать админа
+    confirm_unblock: Разблокировать пользователя?
+    confirm_block: Заблокировать пользователя?
+    confirm_delete: Удалить пользователя?
+    confirm_toggle_admin: Изменить роль админа?
+    confirm_delete_template: Удалить шаблон?
+    created_by: Создано пользователем
+register:
+    title: Регистрация
+    email: Email
+    name: Имя
+    password: Пароль
+    register: Зарегистрироваться
+login:
+    title: Вход
+    email: Email
+    password: Пароль
+    login: Войти
+search:
+    title: Результаты поиска
+    by_tag: по тегу
+    no_templates: Шаблоны не найдены

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Заполнение формы: {{ template.title }}</h2>
+        <p>{{ template.description }}</p>
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': ''}}) }}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Ответы на вопросы</h5>
+                    {% for field in form.children %}
+                        {% if field.vars.name starts with 'answer_' %}
+                            <div class="mb-3">
+                                {{ form_label(field, field.vars.label, {'label_attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(field) }}
+                                {{ form_errors(field) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

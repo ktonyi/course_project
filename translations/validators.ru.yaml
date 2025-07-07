@@ -1,0 +1,4 @@
+This value is not valid.: Это значение недопустимо.
+This value should not be blank.: Это поле не должно быть пустым.
+The value you selected is not a valid choice.: Выбранное значение недопустимо.
+This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.: Это значение слишком короткое. Должно быть {{ limit }} символов или больше.

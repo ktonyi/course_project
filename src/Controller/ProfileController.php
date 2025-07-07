@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Template;
 use App\Entity\Question;
+use App\Entity\Form;
 use App\Entity\QuestionTypeEnum;
 use App\Form\TemplateType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,9 +26,9 @@ class ProfileController extends AbstractController
     #[Route('/profile', name: 'profile')]
     public function index(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('ROLE_USER','ROLE_ADMIN');
 
-        if ($this->getUser() && $this->getUser()->isBlocked()) {
+        if ($this->getUser()->isBlocked()) {
             throw new AccessDeniedException('Your account is blocked.');
         }
 
@@ -40,13 +41,8 @@ class ProfileController extends AbstractController
             $template->setCreatedAt(new \DateTimeImmutable());
 
             $tags = $form->get('tags')->getData();
-            if (!empty($tags) && is_array($tags)) {
-                $template->setTags($tags);
-            } else {
-                $template->setTags([]);
-            }
+            $template->setTags(is_array($tags) ? $tags : []);
 
-            
             $questions = $form->get('questions')->getData();
             $typeCounts = [
                 QuestionTypeEnum::STRING->value => 0,
@@ -59,10 +55,11 @@ class ProfileController extends AbstractController
                 $type = $question->getType()->value;
                 $typeCounts[$type]++;
                 if ($typeCounts[$type] > 4) {
-                    $form->get('questions')->addError(new \Symfony\Component\Form\FormError("Maximum 4 questions of type '$type' allowed."));
+                    $form->get('questions')->addError(new \Symfony\Component\Form\FormError("Максимум 4 вопроса типа '$type'."));
                     return $this->render('profile/index.html.twig', [
                         'form' => $form->createView(),
                         'templates' => $this->getUser()->getTemplates(),
+                        'forms' => $this->entityManager->getRepository(Form::class)->findBy(['user' => $this->getUser()]),
                     ]);
                 }
                 $question->setPosition($index + 1);
@@ -72,13 +69,14 @@ class ProfileController extends AbstractController
             $this->entityManager->persist($template);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Template created successfully!');
+            $this->addFlash('success', 'Шаблон успешно создан!');
             return $this->redirectToRoute('profile');
         }
 
         return $this->render('profile/index.html.twig', [
             'form' => $form->createView(),
             'templates' => $this->getUser()->getTemplates(),
+            'forms' => $this->entityManager->getRepository(Form::class)->findBy(['user' => $this->getUser()]),
         ]);
     }
 

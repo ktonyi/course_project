@@ -40,6 +40,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Template::class)]
     private Collection $templates;
 
+    #[ORM\Column(type: 'string', length: 2, nullable: true)]
+    private ?string $language = null;
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?string $language): self
+    {
+        $this->language = $language;
+        return $this;
+    }
+
     public function __construct()
     {
         $this->templates = new ArrayCollection();
@@ -86,7 +100,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_USER';'ROLE_ADMIN';
         return array_unique($roles);
     }
 

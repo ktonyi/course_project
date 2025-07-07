@@ -58,7 +58,7 @@ class AdminController extends AbstractController
 
             $this->logger->debug('User blocked', ['email' => $user->getEmail(), 'isBlocked' => $user->isBlocked()]);
 
-           
+          
             if ($this->getUser() === $user) {
                 $this->tokenStorage->setToken(null);
                 $request->getSession()->invalidate();

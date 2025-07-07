@@ -1,0 +1,4 @@
+This value is not valid.: This value is not valid.
+This value should not be blank.: This field cannot be blank.
+The value you selected is not a valid choice.: The selected value is not valid.
+This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.: This value is too short. It should have {{ limit }} characters or more.

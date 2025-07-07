@@ -2,32 +2,32 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h2>Admin Panel</h2>
+        <h2>{{ 'admin.title'|trans }}</h2>
 
         <ul class="nav nav-tabs" id="adminTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">Users</button>
+                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">{{ 'admin.manage_users'|trans }}</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="templates-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-controls="templates" aria-selected="false">Templates</button>
+                <button class="nav-link" id="templates-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-controls="templates" aria-selected="false">{{ 'admin.manage_templates'|trans }}</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button" role="tab" aria-controls="forms" aria-selected="false">Forms</button>
+                <button class="nav-link" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button" role="tab" aria-controls="forms" aria-selected="false">{{ 'admin.manage_forms'|trans }}</button>
             </li>
         </ul>
 
         <div class="tab-content mt-3" id="adminTabsContent">
             <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
-                <h3>Manage Users</h3>
+                <h3>{{ 'admin.manage_users'|trans }}</h3>
                 {% if users|length > 0 %}
                     <table class="table table-hover" id="users-table">
                         <thead>
                             <tr>
-                                <th scope="col" class="sortable" data-sort="email">Email <span class="sort-icon"></span></th>
-                                <th scope="col" class="sortable" data-sort="name">Name <span class="sort-icon"></span></th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Roles</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col" class="sortable" data-sort="email">{{ 'admin.email'|trans }} <span class="sort-icon"></span></th>
+                                <th scope="col" class="sortable" data-sort="name">{{ 'admin.name'|trans }} <span class="sort-icon"></span></th>
+                                <th scope="col">{{ 'admin.status'|trans }}</th>
+                                <th scope="col">{{ 'admin.roles'|trans }}</th>
+                                <th scope="col">{{ 'admin.actions'|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,27 +35,27 @@
                                 <tr>
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.name }}</td>
-                                    <td>{{ user.isBlocked ? 'Blocked' : 'Active' }}</td>
+                                    <td>{{ user.isBlocked ? 'admin.blocked'|trans : 'admin.active'|trans }}</td>
                                     <td>{{ user.roles|join(', ') }}</td>
                                     <td>
                                         {% if user.isBlocked %}
-                                            <form method="post" action="{{ path('admin_user_unblock', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Unblock user?');">
+                                            <form method="post" action="{{ path('admin_user_unblock', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('{{ 'admin.confirm_unblock'|trans }}');">
                                                 <input type="hidden" name="_token" value="{{ csrf_token('unblock' ~ user.id) }}">
-                                                <button type="submit" class="btn btn-sm btn-outline-success">Unblock</button>
+                                                <button type="submit" class="btn btn-sm btn-outline-success">{{ 'admin.unblock'|trans }}</button>
                                             </form>
                                         {% else %}
-                                            <form method="post" action="{{ path('admin_user_block', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Block user?');">
+                                            <form method="post" action="{{ path('admin_user_block', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('{{ 'admin.confirm_block'|trans }}');">
                                                 <input type="hidden" name="_token" value="{{ csrf_token('block' ~ user.id) }}">
-                                                <button type="submit" class="btn btn-sm btn-outline-warning">Block</button>
+                                                <button type="submit" class="btn btn-sm btn-outline-warning">{{ 'admin.block'|trans }}</button>
                                             </form>
                                         {% endif %}
-                                        <form method="post" action="{{ path('admin_user_delete', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Delete user?');">
+                                        <form method="post" action="{{ path('admin_user_delete', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('{{ 'admin.confirm_delete'|trans }}');">
                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">{{ 'admin.delete'|trans }}</button>
                                         </form>
-                                        <form method="post" action="{{ path('admin_user_toggle_admin', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Toggle admin role?');">
+                                        <form method="post" action="{{ path('admin_user_toggle_admin', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('{{ 'admin.confirm_toggle_admin'|trans }}');">
                                             <input type="hidden" name="_token" value="{{ csrf_token('toggle-admin' ~ user.id) }}">
-                                            <button type="submit" class="btn btn-sm btn-outline-primary">{{ 'ROLE_ADMIN' in user.roles ? 'Remove Admin' : 'Make Admin' }}</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-primary">{{ 'ROLE_ADMIN' in user.roles ? 'admin.remove_admin'|trans : 'admin.make_admin'|trans }}</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -63,19 +63,19 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <p>No users found.</p>
+                    <p>{{ 'admin.no_users'|trans }}</p>
                 {% endif %}
             </div>
             <div class="tab-pane fade" id="templates" role="tabpanel" aria-labelledby="templates-tab">
-                <h3>Manage Templates</h3>
+                <h3>{{ 'admin.manage_templates'|trans }}</h3>
                 {% if templates|length > 0 %}
                     <table class="table table-hover" id="templates-table">
                         <thead>
                             <tr>
-                                <th scope="col" class="sortable" data-sort="title">Title <span class="sort-icon"></span></th>
-                                <th scope="col" class="sortable" data-sort="topic">Topic <span class="sort-icon"></span></th>
-                                <th scope="col">Created By</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col" class="sortable" data-sort="title">{{ 'admin.template_title'|trans }} <span class="sort-icon"></span></th>
+                                <th scope="col" class="sortable" data-sort="topic">{{ 'admin.topic'|trans }} <span class="sort-icon"></span></th>
+                                <th scope="col">{{ 'admin.created_by'|trans }}</th>
+                                <th scope="col">{{ 'admin.actions'|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,9 +85,9 @@
                                     <td>{{ template.topic }}</td>
                                     <td>{{ template.createdBy.email }}</td>
                                     <td>
-                                        <form method="post" action="{{ path('admin_template_delete', {'id': template.id}) }}" style="display:inline;" onsubmit="return confirm('Delete template?');">
+                                        <form method="post" action="{{ path('admin_template_delete', {'id': template.id}) }}" style="display:inline;" onsubmit="return confirm('{{ 'admin.confirm_delete_template'|trans }}');">
                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ template.id) }}">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">{{ 'admin.delete'|trans }}</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -95,19 +95,19 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <p>No templates found.</p>
+                    <p>{{ 'admin.no_templates'|trans }}</p>
                 {% endif %}
             </div>
             <div class="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="forms-tab">
-                <h3>Manage Forms</h3>
-                <p>No forms yet.</p>
+                <h3>{{ 'admin.manage_forms'|trans }}</h3>
+                <p>{{ 'admin.no_forms'|trans }}</p>
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded'); 
+            console.log('DOM loaded');
             const tables = ['users-table', 'templates-table'];
             tables.forEach(tableId => {
                 const table = document.getElementById(tableId);
@@ -115,7 +115,7 @@
                     const sortables = table.querySelectorAll('.sortable');
                     sortables.forEach(sortable => {
                         sortable.addEventListener('click', function() {
-                            console.log('Sorting clicked:', this.dataset.sort); 
+                            console.log('Sorting clicked:', this.dataset.sort);
                             const tbody = table.querySelector('tbody');
                             const rows = Array.from(tbody.querySelectorAll('tr'));
                             const column = this.dataset.sort;

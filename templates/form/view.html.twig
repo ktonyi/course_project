@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>{{ 'form.fill_title'|trans }}: {{ template.title }}</h2>
+        <p>{{ 'form.filled_by'|trans }}: {{ form.user.name }} ({{ form.createdAt|date('d.m.Y H:i') }})</p>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ 'form.answers'|trans }}</h5>
+                {% for question in form.template.questions %}
+                    {% if question.isVisibleInResults %}
+                        <div class="mb-3">
+                            <strong>{{ question.title }}</strong>
+                            <p>{{ form.answers[question.id]|default('form.no_answer'|trans) }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <a href="{{ path('profile') }}" class="btn btn-secondary mt-3">{{ 'form.back'|trans }}</a>
+    </div>
+{% endblock %}

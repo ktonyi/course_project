@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>{{ template.title }}</h2>
+        <p>{{ template.description }}</p>
+        <p>{{ 'profile.topic'|trans }}: {{ template.topic }}</p>
+        <p>{{ 'home.author'|trans }}: {{ template.createdBy.name }}</p>
+    </div>
+{% endblock %}

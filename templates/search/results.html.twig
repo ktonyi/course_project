@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>{{ 'search.title'|trans }}{% if tag %} {{ 'search.by_tag'|trans }}: {{ tag }}{% endif %}</h2>
+        {% if templates|length > 0 %}
+            <div class="row">
+                {% for template in templates %}
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{{ path('template_view', {'id': template.id}) }}">{{ template.title }}</a>
+                                </h5>
+                                <p class="card-text">{{ template.description}}</p>
+                                <p class="card-text"><small class="text-muted">{{ 'home.author'|trans }}: {{ template.createdBy.name }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>{{ 'search.no_templates'|trans }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

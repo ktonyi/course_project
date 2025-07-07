@@ -1,0 +1,102 @@
+navbar:
+    brand: Custom Forms
+    login: Login
+    register: Register
+    profile: Profile
+    admin: Admin
+    logout: Logout
+    search: Search
+    language: Language
+home:
+    latest_templates: Latest Templates
+    top_templates: Top 5 Popular Templates
+    tag_cloud: Tag Cloud
+    no_templates: No templates yet
+    no_tags: No tags yet
+    author: Author
+    fill_form: Fill Form
+    title: Title
+    forms_filled: Forms Filled
+form:
+    fill_title: Fill Form
+    submit: Submit
+    no_answer: No answer
+    answers: Answers
+    filled_by: Filled by
+    back: Back
+    success: Form successfully submitted!
+profile:
+    title: My Profile
+    create_template: Create Template
+    my_templates: My Templates
+    my_forms: My Forms
+    no_forms: No forms yet
+    no_templates: No templates yet
+    template_title: Title
+    topic: Topic
+    actions: Actions
+    edit: Edit
+    delete: Delete
+    view: View
+    template_settings: Template Settings
+    questions: Questions
+    question_type: Question Type
+    question_type.string: Single-line text
+    question_type.text: Multi-line text
+    question_type.integer: Non-negative integer
+    question_type.checkbox: Checkbox
+    question_title: Question Title
+    description: Description
+    show_in_results: Show in results
+    position: Position
+    remove: Remove
+    add_question: Add Question
+    max_questions: Maximum 4 questions of type '%type%'
+    tags: Tags (comma-separated)
+    public: Public
+    allowed_users: Allowed Users
+    topic.education: Education
+    topic.quiz: Quiz
+    topic.other: Other
+    confirm_delete: Delete template?
+admin:
+    title: Admin Panel
+    manage_users: Manage Users
+    manage_templates: Manage Templates
+    manage_forms: Manage Forms
+    no_users: No users found
+    no_templates: No templates found
+    no_forms: No forms yet
+    email: Email
+    name: Name
+    status: Status
+    roles: Roles
+    actions: Actions
+    blocked: Blocked
+    active: Active
+    unblock: Unblock
+    block: Block
+    delete: Delete
+    make_admin: Make Admin
+    remove_admin: Remove Admin
+    confirm_unblock: Unblock user?
+    confirm_block: Block user?
+    confirm_delete: Delete user?
+    confirm_toggle_admin: Toggle admin role?
+    confirm_delete_template: Delete template?
+    created_by: Created by
+register:
+    title: Register
+    email: Email
+    name: Name
+    password: Password
+    register: Register
+login:
+    title: Login
+    email: Email
+    password: Password
+    login: Login
+search:
+    title: Search Results
+    by_tag: by tag
+    no_templates: No templates found

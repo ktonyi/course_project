@@ -1,49 +1,58 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Latest Templates</h2>
-    <div class="row">
-        {% for template in latest_templates %}
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Template Name</h5>
-                        <p class="card-text">Description...</p>
-                        <p class="card-text"><small class="text-muted">By: Author</small></p>
+    <div class="container mt-5">
+        <h2>{{ 'home.latest_templates'|trans }}</h2>
+        <div class="row">
+            {% for template in latest_templates %}
+                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ path('template_view', {'id': template.id}) }}">{{ template.title }}</a>
+                            </h5>
+                            <p class="card-text">{{ template.description}}</p>
+                            <p class="card-text"><small class="text-muted">{{ 'home.author'|trans }}: {{ template.createdBy.name }}</small></p>
+                            {% if app.user and (template.isPublic or template.allowedUsers.contains(app.user) or app.user == template.createdBy or is_granted('ROLE_ADMIN')) %}
+                                <a href="{{ path('form_fill', {'id': template.id}) }}" class="btn btn-sm btn-primary">{{ 'home.fill_form'|trans }}</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% else %}
-            <p>No templates yet.</p>
-        {% endfor %}
-    </div>
-
-    <h2>Top 5 Popular Templates</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Forms Filled</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for template in top_templates %}
-                <tr>
-                    <td>Template Name</td>
-                    <td>0</td>
-                </tr>
             {% else %}
-                <tr><td colspan="2">No templates yet.</td></tr>
+                <p>{{ 'home.no_templates'|trans }}</p>
             {% endfor %}
-        </tbody>
-    </table>
+        </div>
 
-    <h2>Tag Cloud</h2>
-    <div>
-        {% for tag in tags %}
-            <span class="badge bg-primary">{{ tag }}</span>
-        {% else %}
-            <p>No tags yet.</p>
-        {% endfor %}
+        <h2>{{ 'home.top_templates'|trans }}</h2>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>{{ 'home.title'|trans }}</th>
+                        <th>{{ 'home.forms_filled'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in top_templates %}
+                        <tr>
+                            <td><a href="{{ path('template_view', {'id': row[0].id}) }}">{{ row[0].title }}</a></td>
+                            <td>{{ row.formCount }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="2">{{ 'home.no_templates'|trans }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2>{{ 'home.tag_cloud'|trans }}</h2>
+        <div class="tag-cloud">
+            {% for tag in tags %}
+                <a href="{{ path('search', {'tag': tag}) }}" class="badge bg-primary me-1 mb-1">{{ tag }}</a>
+            {% else %}
+                <p>{{ 'home.no_tags'|trans }}</p>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
